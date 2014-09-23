@@ -17,30 +17,31 @@ REST 之所以能簡化開發,是因為其所引入的架構約束。
 ## Rails 透過 HTTP 作為 generic connector interface,使用 HTTP 的四種 verb :GET、POST、PUT、DELETE 對資源進行操作。
 
  - GET
-```
+```html
 <%=link_to("List", posts_path) %>
 <%=link_to("Show", post_path(post)) %>
 <%=link_to("New", new_post_path) %>
 <%=link_to("Edit", edit_post_path(post)) %>
 ```
  - POST
-```
+```html
 <%= form_for @post , :url => posts_path , :html => {:method => :post} do |f| %>
 ```
  - PUT
  
-```
+```html
 <%= form_for @post , :url => post_path(@post) , :html => {:method => :put} do |f| %>
 ```
 - Destroy
-```
+
+```html
 <%= link_to("Destroy", post_path(@post), :method => :delete )
 ```
 
 ## Form 綁定 Model Attribute 的設計
 Rails 的表單欄位,是對應 Model Attribute 的:
 
-```
+```html
 <h1>New post</h1>
     <%= form_for @post , :url => posts_path do |f| %>
         <%= f.error_messages %>
@@ -73,7 +74,8 @@ end
 
 #### Member
 宣告這個動作是屬於單個資源的 URI。可以透過 /photos/1/preview 進行 GET。有 `preview_photo_path(photo)` 或 `preview_photo_url(photo)` 這樣的 `Url Helper` 可以用。
-```
+
+```Ruby
 resources :photos do
     member do
         get 'preview'
@@ -81,14 +83,16 @@ resources :photos do
 end
 ```
 也可以使用這種寫法:
-```
+
+```Ruby
 resources :photos do
     get 'preview', :on => :member
 end
 ```
 #### Collection
 宣告這個動作是屬於一組資源的 URI。可以透過 /photos/search 進行 GET。有 `search_photos_path` 或 `search_photos_url` 這樣的 `Url Helper` 可以用。
-```
+
+```Ruby
 resources :photos do
     collection do
         get 'search'
@@ -96,7 +100,8 @@ resources :photos do
 end
 ```
 也可以使用這種寫法:
-```
+
+```Ruby
 resources :photos do
     get 'search', :on => :collection
 end
@@ -105,7 +110,8 @@ end
 ### Nested Resources
 
 有時候我們會需要使用雙重 resources 來表示一組資源。比如說 Post 與 Comment :
-```
+
+```Ruby
 resources :posts do
     resources :comments
 end
